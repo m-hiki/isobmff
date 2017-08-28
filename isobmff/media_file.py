@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from .box import indent
 from .box import read_box
+import os
 
 
 class MediaFile(object):
@@ -20,9 +21,11 @@ class MediaFile(object):
         return 'ISOBaseMediaFile\n' + indent(rep)
 
     def read(self, file_name):
+        read_size = os.path.getsize(file_name)
         file = open(file_name, 'rb')
+
         try:
-            while True:
+            while read_size:
                 box = read_box(file)
                 if not box:
                     break
@@ -30,5 +33,6 @@ class MediaFile(object):
                     self.mdats.append(box)
                 else:
                     setattr(self, box.box_type, box)
+                read_size -= box.size
         finally:
             file.close()
