@@ -3,8 +3,7 @@ from .box import Box, Quantity, read_box, read_int, read_string
 from .stbl import VisualSampleEntry
 
 
-class HEVCSampleEntry(VisualSampleEntry):
-    box_type = 'hvc1'
+class HEVCSampleEntry(VisualSampleEntry, box_type='hvc1'):
     is_mandatry = True
     quantity = Quantity.ONE_OR_MORE
 
@@ -17,9 +16,7 @@ class HEVCSampleEntry(VisualSampleEntry):
         self.config = read_box(file)
 
 
-class HEVCConfigurationBox(Box):
-    box_type = 'hvcC'
-
+class HEVCConfigurationBox(Box, box_type='hvcC'):
     def __init__(self, size):
         super().__init__(size=size)
         self.hevc_config = None

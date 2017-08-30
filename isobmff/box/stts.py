@@ -3,8 +3,7 @@
 from .box import read_int
 from .full_box import FullBox
 
-class TimeToSampleBox(FullBox):
-    box_type = 'stts'
+class TimeToSampleBox(FullBox, box_type='stts'):
     is_mandatory = True
 
     def __init__(self, size, version, flags):

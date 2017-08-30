@@ -3,13 +3,11 @@ from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
 
-class SampleTableBox(Box):
-    box_type = 'stbl'
+class SampleTableBox(Box, box_type='stbl'):
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
 
-class SampleDescriptionBox(FullBox):
-    box_type = 'stsd'
+class SampleDescriptionBox(FullBox, box_type='stsd'):    
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE    
     
@@ -26,7 +24,7 @@ class SampleDescriptionBox(FullBox):
                 break
             self.samples.append(box)
 
-class SampleEntry(Box):
+class SampleEntry(Box, box_type=None):
 
     def __init__(self, size):
         super().__init__(size=size)
@@ -47,10 +45,8 @@ class SampleEntry(Box):
         self.data_reference_index = read_int(file, 2)
 
 
-class HintSampleEntry(SampleEntry):
-    """Hint Sample Entry
-    """
-    box_type = 'hint'
+class HintSampleEntry(SampleEntry, box_type='hint'):
+    """Hint Sample Entry"""    
 
     def __init__(self, size):
         super().__init__(size=size)
@@ -60,10 +56,8 @@ class HintSampleEntry(SampleEntry):
         box_size = self.get_box_size()
         self.data = file.read(box_size)
 
-class VisualSampleEntry(SampleEntry):
-    """Visual Sample Entry
-    """
-    box_type = 'vide'
+class VisualSampleEntry(SampleEntry, box_type='vide'):
+    """Visual Sample Entry"""
 
     def __init__(self, size):
         super().__init__(size=size)
@@ -96,9 +90,8 @@ class VisualSampleEntry(SampleEntry):
         self.depth = read_int(file, 2)
         self.pre_defined3 = read_int(file, 2)
 
-class AudioSampleEntry(SampleEntry):
+class AudioSampleEntry(SampleEntry, box_type='soun'):
     """Audio Sample Entry"""
-    box_type = 'soun'
 
     def __init__(self, size):
         super().__init__(size=size)
@@ -121,9 +114,8 @@ class AudioSampleEntry(SampleEntry):
         self.samperate = read_int(file, 4)
 
 
-class BitRateBox(Box):
+class BitRateBox(Box, box_type='btrt'):
     """Bit Rate Box"""
-    box_type = 'btrt'
 
     def __init__(self, size):
         super().__init__(size=size)

@@ -2,13 +2,11 @@
 from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
-class ProtectionSchemeInfoBox(Box):
-    box_type = 'sinf'
+class ProtectionSchemeInfoBox(Box, box_type='sinf'):
     is_mandatory = False
     quantity = Quantity.ONE_OR_MORE
 
-class OriginalFormatBox(Box):
-    box_type = 'frma'
+class OriginalFormatBox(Box, box_type='frma'):    
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
 
@@ -19,8 +17,7 @@ class OriginalFormatBox(Box):
     def read(self, file):
         self.data_format = read_int(file, 4)
 
-class SchemeTypeBox(FullBox):
-    box_type = 'schm'
+class SchemeTypeBox(FullBox, box_type='schm'):
     is_mandatory = False
     quantity = Quantity.ZERO_OR_ONE
 
@@ -36,7 +33,6 @@ class SchemeTypeBox(FullBox):
         if self.flags & 0b1:
             self.scheme_uri = read_string(file)
 
-class SchemeInformationBox(Box):
-    box_type = 'schi'
+class SchemeInformationBox(Box, box_type='schi'):
     is_mandatory = False
     quantity = Quantity.ZERO_OR_ONE

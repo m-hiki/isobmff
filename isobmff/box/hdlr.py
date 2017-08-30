@@ -2,8 +2,7 @@
 from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
-class HandlerReferenceBox(FullBox):
-    box_type = 'hdlr'
+class HandlerReferenceBox(FullBox, box_type='hdlr'):    
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
 

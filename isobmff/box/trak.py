@@ -3,13 +3,11 @@ from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
 
-class TrackBox(Box):
-    box_type = 'trak'
+class TrackBox(Box, box_type='trak'):
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
 
-class TrackHeaderBox(FullBox):
-    box_type = 'tkhd'
+class TrackHeaderBox(FullBox, box_type='tkhd'):
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
 

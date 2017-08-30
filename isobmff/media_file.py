@@ -31,7 +31,8 @@ class MediaFile(object):
                 if box.box_type == 'mdat':
                     self.mdats.append(box)
                 else:
-                    setattr(self, box.box_type, box)
+                    #setattr(self, box.box_type, box)
+                    pass
                 read_size -= box.size
         finally:
             file.close()

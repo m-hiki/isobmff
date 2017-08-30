@@ -3,8 +3,7 @@
 from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
-class SyncSampleBox(FullBox):
-    box_type = 'stss'
+class SyncSampleBox(FullBox, box_type='stss'):
     is_mandatory = False
 
     def __init__(self, size, version, flags):

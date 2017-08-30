@@ -2,8 +2,7 @@
 from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
-class ItemInformationBox(FullBox):
-    box_type = 'iinf'
+class ItemInformationBox(FullBox, box_type='iinf'):    
     is_mandatory = False
 
     def __init__(self, size, version, flags):
@@ -27,8 +26,7 @@ class ItemInformationBox(FullBox):
             if box.box_type == 'infe':
                 self.item_infos.append(box)
 
-class ItemInfomationEntry(FullBox):
-    box_type = 'infe'
+class ItemInfomationEntry(FullBox, box_type='infe'):    
 
     def __init__(self, size, version, flags):
         super().__init__(size=size, version=version, flags=flags)
