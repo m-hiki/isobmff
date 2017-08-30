@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-from .box import Box
-from .box import Quantity
-from .box import indent
-from .box import read_int
-from .box import read_string
+from .box import Box, Quantity, read_box, read_int, read_string
 
 
 class FileTypeBox(Box):

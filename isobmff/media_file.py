@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from .box import indent
-from .box import read_box
+from .box.box import read_box, indent
 import os
 
 

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from .box import FullBox
 from .box import Quantity
-
+from .full_box import FullBox
 
 class MetaBox(FullBox):
     box_type = 'meta'

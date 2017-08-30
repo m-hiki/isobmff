@@ -1,7 +1,7 @@
 
 # -*- coding: utf-8 -*-
-from .box import FullBox
 from .box import read_int
+from .full_box import FullBox
 
 class TimeToSampleBox(FullBox):
     box_type = 'stts'

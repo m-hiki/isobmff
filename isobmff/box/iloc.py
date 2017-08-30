@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from .box import FullBox
 from .box import read_int
 from .box import indent
-
+from .full_box import FullBox
 
 class ItemLocationBox(FullBox):
     box_type = 'iloc'

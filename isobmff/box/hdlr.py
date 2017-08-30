@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-from .box import FullBox
-from .box import Quantity
-from .box import indent
-from .box import read_int
-from .box import read_string
-
+from .box import Box, Quantity, read_box, read_int, read_string
+from .full_box import FullBox
 
 class HandlerReferenceBox(FullBox):
     box_type = 'hdlr'
