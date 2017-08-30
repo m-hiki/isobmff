@@ -3,13 +3,11 @@ from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
 
-class MovieBox(Box):
-    box_type = 'moov'
+class MovieBox(Box, box_type='moov'):    
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
 
-class MovieHeaderBox(FullBox):
-    box_type = 'mvhd'
+class MovieHeaderBox(FullBox, box_type='mvhd'):    
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
 

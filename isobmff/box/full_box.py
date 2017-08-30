@@ -3,8 +3,7 @@ import re
 from .box import Box
 
 
-class FullBox(Box):
-    box_type = None
+class FullBox(Box, box_type=None):
 
     def __init__(self, size, version=None, flags=None):
         super().__init__(size)

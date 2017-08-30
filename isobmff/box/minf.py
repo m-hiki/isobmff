@@ -3,14 +3,12 @@ from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
 
-class MediaInformationBox(Box):
-    box_type = 'minf'
+class MediaInformationBox(Box, box_type='minf'):    
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
 
 
-class VideoMediaHeaderBox(FullBox):
-    box_type = 'vmhd'
+class VideoMediaHeaderBox(FullBox, box_type='vmhd'):
     is_mandatory = True
 
     def __init__(self, size, version, flags):
@@ -24,8 +22,7 @@ class VideoMediaHeaderBox(FullBox):
             self.opcolor.append(read_int(file, 2))
 
 
-class SoundMediaHeaderBox(FullBox):
-    box_type = 'smhd'
+class SoundMediaHeaderBox(FullBox, box_type='smhd'):    
     is_mandatory = True
 
     def __init__(self, size, version, flags):
@@ -38,8 +35,7 @@ class SoundMediaHeaderBox(FullBox):
         self.reserved = read_int(file, 2)
 
 
-class HintMediaHeaderBox(FullBox):
-    box_type = 'hmhd'
+class HintMediaHeaderBox(FullBox, box_type='hmhd'):
     is_mandatory = True
 
     def __init__(self, size, version, flags):
@@ -58,6 +54,5 @@ class HintMediaHeaderBox(FullBox):
         self.reserved = read_int(file, 4)
 
 
-class NullMediaHeaderBox(FullBox):
-    box_type = 'nmhd'
+class NullMediaHeaderBox(FullBox, box_type='nmhd'):    
     is_mandatory = True

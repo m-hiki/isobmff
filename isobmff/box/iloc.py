@@ -3,8 +3,7 @@ from .box import read_int
 from .box import indent
 from .full_box import FullBox
 
-class ItemLocationBox(FullBox):
-    box_type = 'iloc'
+class ItemLocationBox(FullBox, box_type='iloc'):    
     is_mandatory = False
 
     def __init__(self, size, version, flags):

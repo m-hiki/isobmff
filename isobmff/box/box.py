@@ -3,13 +3,21 @@ import re
 from enum import Enum
 
 
-class AbcBox(type):
-    #TODO: human readable implementation of __repr__ 
-    pass
+class BoxMeta(type):
+    box_list = {}
+    
+    def __new__(mcs, clsname, bases, clsdict, *, box_type):
+        clsdict['box_type'] = box_type
+        cls = type.__new__(mcs, clsname, bases, clsdict)        
+        if box_type:
+            mcs.box_list[box_type] = cls
+        return cls
 
-class Box(object):
-    box_type = None
+    def __init__(self, clsname, bases, clsdict, *, box_type):
+        super().__init__(clsname, bases, clsdict)
 
+
+class Box(metaclass=BoxMeta, box_type=None):
     def __init__(self, size=None):
         self.size = size
         self.largesize = None
@@ -18,6 +26,23 @@ class Box(object):
         """get box size excluding header"""
         return self.size - 8
 
+    def read(self, file):
+        self.size = read_int(file, 4)
+        self.box_type = read_string(file, 4)
+        print(self.box_type + '(' + str(self.size) + ')')
+        #print(BoxMeta.box_list)
+        self.__class__ = BoxMeta.box_list[self.box_type]
+        if self.__class__.__base__.__name__ == 'FullBox':
+            self.version = read_int(file, 1)
+            self.flags = read_int(file, 3)
+        if self.get_box_size():
+            self.read(file)
+
+    def write(self, file):
+        """write box to file"""
+        pass
+
+class Container(object):
     def read(self, file):
         read_size = self.get_box_size()
         #print(file.read(read_size))
@@ -28,10 +53,6 @@ class Box(object):
             #TODO: Quantityでそのままsetattrか配列にappendか分ける
             setattr(self, box.box_type, box)
             read_size -= box.size
-
-    def write(self, file):
-        """write box to file"""
-        pass
 
 class Quantity(Enum):
     ZERO_OR_ONE = 0
@@ -53,29 +74,20 @@ def read_string(file, length=None):
 def indent(rep):
     return re.sub(r'^', '  ', rep, flags=re.M)
 
-def get_class_list(cls, res=[]):
-    subclasses = getattr(cls, '__subclasses__')()
-    for subclass in subclasses:
-        get_class_list(subclass, res)
-    res.append(cls)
-    return res
-
 def read_box(file):
+    """
     size = read_int(file, 4)
     box_type = read_string(file, 4)
     print(box_type + '(' + str(size) + ')')
-    box_classes = get_class_list(Box)
-    box = None
-    for box_class in box_classes:
-        if box_class.box_type == box_type:
-            box = box_class.__new__(box_class)
-            if box_class.__base__.__name__ == 'FullBox':
-                version = read_int(file, 1)
-                flags = read_int(file, 3)
-                box.__init__(size=size, version=version, flags=flags)
-            else:
-                box.__init__(size=size)
-            if box.get_box_size():
-                box.read(file)
-            break
+    #print(BoxMeta.box_list)
+    box = BoxMeta.box_list[box_type]()
+    if box.__base__.__name__ == 'FullBox':
+        version = read_int(file, 1)
+        flags = read_int(file, 3)
+    if box.get_box_size():
+        box.read(file)    
+    """
+    box = Box()
+    box.read(file)
+
     return box

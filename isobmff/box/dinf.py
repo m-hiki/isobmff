@@ -3,14 +3,12 @@ from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
 
-class DataInformationBox(Box):
-    box_type = 'dinf'
+class DataInformationBox(Box, box_type='dinf'):    
     is_mandatry = True
     quantity = Quantity.EXACTLY_ONE
 
 
-class DataReferenceBox(FullBox):
-    box_type = 'dref'
+class DataReferenceBox(FullBox, box_type='dref'):    
     is_mandatry = True
     quantity = Quantity.EXACTLY_ONE
 
@@ -27,8 +25,7 @@ class DataReferenceBox(FullBox):
             self.data_entry.append(box)
 
 
-class DataEntryUrlBox(FullBox):
-    box_type = 'url '
+class DataEntryUrlBox(FullBox, box_type='url '):    
     is_mandatry = True
 
     def __init__(self, size, version, flags):
@@ -39,8 +36,7 @@ class DataEntryUrlBox(FullBox):
         self.location = read_string(file)
 
 
-class DataEntryUrnBox(FullBox):
-    box_type = 'urn '
+class DataEntryUrnBox(FullBox, box_type='urn '):    
     is_mandatry = True
 
     def __init__(self, size, version, flags):

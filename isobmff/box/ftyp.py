@@ -2,8 +2,7 @@
 from .box import Box, Quantity, read_box, read_int, read_string
 
 
-class FileTypeBox(Box):
-    box_type = 'ftyp'
+class FileTypeBox(Box, box_type='ftyp'):
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
 

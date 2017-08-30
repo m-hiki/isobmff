@@ -4,8 +4,7 @@ from .box import read_int
 from .full_box import FullBox
 
 
-class SampleSizeBox(FullBox):
-    box_type = 'stsz'
+class SampleSizeBox(FullBox, box_type='stsz'):
     is_mandatory = False
 
     def __init__(self, size, version, flags):
