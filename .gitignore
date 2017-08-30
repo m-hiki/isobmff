@@ -2,7 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
 *.log
 
 # Distribution / packaging
@@ -31,4 +30,5 @@ venv/
 ENV/
 
 .vscode/
+.pylintrc
 installed
