@@ -3,8 +3,8 @@
 
 
 class Field(object):
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, size):
+        self.size = int(size / 8) # bit to byte
         self.value = None
 
     def read(self, file):
@@ -14,22 +14,22 @@ class Field(object):
         pass
 
 
-class IntField(Field):
-    def __init__(self, name, size):
-        super().__init__(name)
-        self.size = size
-    
+class Int(Field):    
     def read(self, file):
         data = file.read(self.size)
         self.value = int.from_bytes(data, byteorder='big', signed=False)
 
 
-class StringField(Field):
-
+class String(Field):
     def read(self, file):
         #TODO: convert utf8
-        if self.length:
-            res = file.read(self.length).decode()
+        if self.size:
+            res = file.read(self.size).decode()
         else:
             res = ''.join(iter(lambda: file.read(1).decode('ascii'), '\x00'))
         self.value = res
+
+
+class DataLocation(Field):
+    def read(self, file):
+        self.value = file.tell()

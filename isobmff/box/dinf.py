@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .box import Box, Quantity, read_box, read_int, read_string
+from .box import Box, Quantity, read_int, read_string
 from .full_box import FullBox
 
 
@@ -19,7 +19,8 @@ class DataReferenceBox(FullBox, box_type='dref'):
     def read(self, file):
         entry_count = read_int(file, 4)
         for _ in range(entry_count):
-            box = read_box(file)
+            box = Box()
+            box.read(file)
             if not box:
                 break
             self.data_entry.append(box)

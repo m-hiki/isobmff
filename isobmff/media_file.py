@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .box.box import read_box, indent
+from .box.box import Box, indent
 import os
 
 
@@ -25,7 +25,8 @@ class MediaFile(object):
 
         try:
             while read_size:
-                box = read_box(file)
+                box = Box()
+                box.read(file)
                 if not box:
                     break
                 if box.box_type == 'mdat':

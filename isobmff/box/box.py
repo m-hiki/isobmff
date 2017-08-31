@@ -1,16 +1,24 @@
 # -*- coding: utf-8 -*-
-import re
+from collections import OrderedDict
 from enum import Enum
+import re
+from .field import Field, Int, String
 
 
 class BoxMeta(type):
     box_list = {}
     
+    @classmethod
+    def __prepare__(mcs, name, bases, *, box_type):
+        return OrderedDict()
+
     def __new__(mcs, clsname, bases, clsdict, *, box_type):
         clsdict['box_type'] = box_type
         cls = type.__new__(mcs, clsname, bases, clsdict)        
         if box_type:
             mcs.box_list[box_type] = cls
+        fields = ((k, v) for k, v in clsdict.items() if isinstance(v, Field))
+        cls.fields = OrderedDict(fields)
         return cls
 
     def __init__(self, clsname, bases, clsdict, *, box_type):
@@ -18,25 +26,32 @@ class BoxMeta(type):
 
 
 class Box(metaclass=BoxMeta, box_type=None):
-    def __init__(self, size=None):
-        self.size = size
-        self.largesize = None
+    size = Int(32)
+    typ = String(32)
+
+    @classmethod
+    def get_class_tree(cls, target):
+        tree = []
+        while target != cls:
+            tree.insert(0, target)
+            target = target.__base__
+        return tree
 
     def get_box_size(self):
         """get box size excluding header"""
         return self.size - 8
 
+    def read_field(self, file):
+        for name, field in self.fields.items():            
+            field.read(file)
+            print(name + ' ' + str(field.value))
+        
     def read(self, file):
-        self.size = read_int(file, 4)
-        self.box_type = read_string(file, 4)
-        print(self.box_type + '(' + str(self.size) + ')')
-        #print(BoxMeta.box_list)
-        self.__class__ = BoxMeta.box_list[self.box_type]
-        if self.__class__.__base__.__name__ == 'FullBox':
-            self.version = read_int(file, 1)
-            self.flags = read_int(file, 3)
-        if self.get_box_size():
-            self.read(file)
+        self.read_field(file)
+        tree = Box.get_class_tree(BoxMeta.box_list[self.typ.value])
+        for cls in tree:
+            self.__class__ = cls
+            self.read_field(file)
 
     def write(self, file):
         """write box to file"""
@@ -60,34 +75,5 @@ class Quantity(Enum):
     ONE_OR_MORE = 2
     ANY_NUMBER = 3
 
-def read_int(file, length):
-    return int.from_bytes(file.read(length), byteorder='big', signed=False)
-
-def read_string(file, length=None):
-    #TODO: convert utf8
-    if length:
-        res = file.read(length).decode()
-    else:
-        res = ''.join(iter(lambda: file.read(1).decode('ascii'), '\x00'))
-    return res
-
 def indent(rep):
     return re.sub(r'^', '  ', rep, flags=re.M)
-
-def read_box(file):
-    """
-    size = read_int(file, 4)
-    box_type = read_string(file, 4)
-    print(box_type + '(' + str(size) + ')')
-    #print(BoxMeta.box_list)
-    box = BoxMeta.box_list[box_type]()
-    if box.__base__.__name__ == 'FullBox':
-        version = read_int(file, 1)
-        flags = read_int(file, 3)
-    if box.get_box_size():
-        box.read(file)    
-    """
-    box = Box()
-    box.read(file)
-
-    return box

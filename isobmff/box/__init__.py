@@ -8,6 +8,7 @@ from . import ccst
 from . import dinf
 from . import ftyp
 from . import full_box
+from . import field
 from . import hdlr
 from . import hvc
 from . import iinf
