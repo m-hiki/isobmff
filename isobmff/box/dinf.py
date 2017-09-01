@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from .box import Box, Quantity, read_int, read_string
+from .box import Box, Quantity
 from .full_box import FullBox
+from .field import Int, String
 
 
 class DataInformationBox(Box, box_type='dinf'):    
@@ -11,10 +12,8 @@ class DataInformationBox(Box, box_type='dinf'):
 class DataReferenceBox(FullBox, box_type='dref'):    
     is_mandatry = True
     quantity = Quantity.EXACTLY_ONE
+    entry_count = Int(32)
 
-    def __init__(self, size, version, flags):
-        super().__init__(size=size, version=version, flags=flags)
-        self.data_entry = []
 
     def read(self, file):
         entry_count = read_int(file, 4)

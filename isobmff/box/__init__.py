@@ -4,10 +4,11 @@ __init__
 """
 from __future__ import absolute_import
 from . import box
+from . import full_box
+from . import ftyp
+"""
 from . import ccst
 from . import dinf
-from . import ftyp
-from . import full_box
 from . import field
 from . import hdlr
 from . import hvc
@@ -28,3 +29,4 @@ from . import stss
 from . import stts
 from . import stsz
 from . import trak
+"""
