@@ -7,6 +7,13 @@ class Field(object):
         if size:
             self.size = int(size / 8) # bit to byte
         self.value = None
+    """
+    def __get__(self, obj, type=None):
+        pass
+    
+    def __set__(self, obj, value):
+        pass
+    """
 
     def read(self, file):
         pass
