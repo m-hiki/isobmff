@@ -32,3 +32,5 @@ ENV/
 .vscode/
 .pylintrc
 installed
+
+.DS_Store

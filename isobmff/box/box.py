@@ -1,34 +1,35 @@
 # -*- coding: utf-8 -*-
 from enum import Enum
-from .box_meta import BoxMeta
-from .field import Field, Int, String
-from io import BytesIO
+from .base import BoxMeta, Field
+from .field import Int, String, Container
+from .bitsio import BitsIO
 import re
 
 
-class BaseBox(metaclass=BoxMeta, box_type=None):
+class Box(Field, metaclass=BoxMeta, boxtype=None):
+    size = Int(32)
+    typ = String(32)
+
     def get_box_size(self):
         """get box size excluding header"""
-        return self.size - 8
+        return self.size - (Box.size.size + Box.typ.size)
 
     def read_field(self, file):
         for name, field in self.fields.items():
             field.read(file)
-            #print(name + ' ' + str(field))
+            print(name + ' ' + str(field))
         
     def read(self, file):
         self.read_field(file)
-        box_size = self.size - (self._size.size + self._typ.size)
-        buff = BytesIO(file.read(box_size))
-        #print(self.typ + '(' + str(self.size) + ')')
+        buff = BitsIO(file.read(self.get_box_size()))
+        print(self.typ + '(' + str(self.size) + ')')
         for cls in get_class_tree(Box, BoxMeta.box_list[self.typ]):
             self.__class__ = cls
+            print(cls)
             self.read_field(buff)
 
     def write(self, file):
         """write box to file"""
-        pass
-
 
 def get_class_tree(cls, target):
     tree = []
@@ -37,19 +38,9 @@ def get_class_tree(cls, target):
         target = target.__base__
     return tree
 
-
-class Box(BaseBox, box_type=None):
-    size = Int(32)
-    typ = String(32)
-
-
-class Quantity(Enum):
-    ZERO_OR_ONE = 0
-    EXACTLY_ONE = 1
-    ONE_OR_MORE = 2
-    ANY_NUMBER = 3
-
-class BoxContainer(Field):
+class ContainerBox(Box, boxtype=None):
+    container = Container(Box())
+    """
     def read(self, file):
         self.value = []
         read_size = self.size
@@ -62,6 +53,13 @@ class BoxContainer(Field):
                 break
             self.value.append(box)
             read_size -= box.size
+    """
+
+class Quantity(Enum):
+    ZERO_OR_ONE = 0
+    EXACTLY_ONE = 1
+    ONE_OR_MORE = 2
+    ANY_NUMBER = 3
 
 def indent(rep):
     return re.sub(r'^', '  ', rep, flags=re.M)

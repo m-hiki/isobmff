@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from .box import Box, Quantity
-from .field import Int, String, ListToBoxEnd
+from .field import Int, String, Container
 
 
-class FileTypeBox(Box, box_type='ftyp'):
+class FileTypeBox(Box, boxtype='ftyp'):
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
     majar_brand = String(32)
     minor_version = String(32)
-    compatible_brands = ListToBoxEnd(String(32))
+    compatible_brands = Container(String(32))

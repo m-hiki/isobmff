@@ -2,18 +2,12 @@
 from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
-class ItemInformationBox(FullBox, box_type='iinf'):    
+class ItemInformationBox(FullBox, boxtype='iinf'):    
     is_mandatory = False
 
     def __init__(self, size, version, flags):
         super().__init__(size=size, version=version, flags=flags)
         self.item_infos = []
-
-    def __repr__(self):
-        rep = 'entry_count: ' + str(len(self.item_infos)) + '\n'
-        for item in self.item_infos:
-            rep += item.__repr__()
-        return super().__repr__() + indent(rep)
 
     def read(self, file):
         count_size = 2 if self.version == 0 else 4
@@ -26,7 +20,7 @@ class ItemInformationBox(FullBox, box_type='iinf'):
             if box.box_type == 'infe':
                 self.item_infos.append(box)
 
-class ItemInfomationEntry(FullBox, box_type='infe'):    
+class ItemInfomationEntry(FullBox, boxtype='infe'):    
 
     def __init__(self, size, version, flags):
         super().__init__(size=size, version=version, flags=flags)

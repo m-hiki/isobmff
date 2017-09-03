@@ -1,26 +1,14 @@
 # -*- coding: utf-8 -*-
-from .box import Box, Quantity, read_box, read_int, read_string
+from .box import Quantity
+from .field import Int, List, String
 from .full_box import FullBox
 
-class HandlerReferenceBox(FullBox, box_type='hdlr'):    
+
+class HandlerReferenceBox(FullBox, boxtype='hdlr'):    
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
-
-    def __init__(self, size, version, flags):
-        super().__init__(size=size, version=version, flags=flags)
-        self.pre_defined = None
-        self.handler_type = None
-        self.reserved = []
-        self.name = None
-
-    def __repr__(self):
-        rep = 'handler_type: ' + self.handler_type + '\n'
-        rep += 'name: ' + self.name
-        return super().__repr__() + indent(rep)
-
-    def read(self, file):
-        self.pre_defined = read_int(file, 4)
-        self.handler_type = read_string(file, 4)
-        for _ in range(3): #3*4=12bytes
-            self.reserved.append(read_int(file, 4))
-        self.name = read_string(file)
+    
+    pre_defined = Int(32)
+    handler_type = String(32)
+    reserved = List(3, Int(32))
+    name = String(32)

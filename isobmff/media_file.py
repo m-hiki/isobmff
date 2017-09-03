@@ -5,6 +5,7 @@ import os
 
 class MediaFile(object):
 
+    
     def __init__(self):
         self.ftyp = None
         self.mdats = []

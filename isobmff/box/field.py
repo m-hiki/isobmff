@@ -1,49 +1,16 @@
 # -*- coding: utf-8 -*-
 from copy import deepcopy
+from .base import Field
 
 
-class Field(object):
-    def __init__(self, size=None):
-        if size:
-            self.size = int(size / 8) # bit to byte
-        self.value = None
+class Bit(Field):
+    def read(self, file):
+        self.value = file.read_bits(self.size)
+
+class Container(Field):
+    """Container
+       read object to box end and save to list
     """
-    def __get__(self, obj, type=None):
-        pass
-    
-    def __set__(self, obj, value):
-        pass
-    """
-
-    def read(self, file):
-        pass
-
-    def write(self, file):
-        pass
-
-
-class Int(Field):    
-    def read(self, file):
-        data = file.read(self.size)
-        self.value = int.from_bytes(data, byteorder='big', signed=False)
-
-
-class String(Field):
-    def read(self, file):
-        #TODO: convert utf8
-        if self.size:
-            res = file.read(self.size).decode()
-        else:
-            res = ''.join(iter(lambda: file.read(1).decode('ascii'), '\x00'))
-        self.value = res
-
-
-class DataLocation(Field):
-    def read(self, file):
-        self.value = file.tell()
-
-
-class ListToBoxEnd(Field):
     def __init__(self, obj):
         super().__init__(None)
         self.obj = obj
@@ -59,3 +26,50 @@ class ListToBoxEnd(Field):
 
         #for item in self.value:
         #    print(item.value)
+
+class DataLocation(Field):
+    def read(self, file):
+        self.value = file.tell()
+
+class Int(Field):
+    def read(self, file):
+        self.value =  int.from_bytes(file.read(self.size), byteorder='big')
+
+class String(Field):
+    def read(self, file):
+        #TODO: convert utf8
+        if self.size:
+            res = file.read(self.size).decode()
+        else:
+            res = ''.join(iter(lambda: file.read(1).decode('ascii'), '\x00'))
+        self.value = res
+
+class List(Field):
+    def __init__(self, size, obj):
+        super().__init__(size)
+        self.obj = obj
+
+    def read(self, file):
+        self.value = []
+        for _ in range(self.size):
+            item = deepcopy(self.obj)
+            item.read(file)
+            self.value.append(item)
+
+class Entry(Field):
+    def __init__(self, count, **args):
+        super().__init__(None)
+        self.count = count
+        self.objs = dict(args)
+
+    def read(self, file):
+        self.value = []
+        count = deepcopy(self.count)
+        count.read(file)
+        for _ in range(count.value):
+            items = {}
+            for name, obj in self.objs.items():
+                item = deepcopy(obj)
+                item.read(file)
+                items[name] = item
+            self.value.append(item)

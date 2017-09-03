@@ -54,45 +54,6 @@ class HEVCDecoderConfigurationRecord(object):
         self.num_of_arrays = None #8
         self.array = []
 
-    def __repr__(self):
-        rep = 'HEVCDecoderConfigurationRecord\n'
-        rep += '  configuration_version: ' + \
-            str(self.configuration_version) + '\n'
-        rep += '  general_profile_space: ' + \
-            str(self.general_profile_space) + '\n'
-        rep += '  general_tier_flag: ' + \
-            str(bin(self.general_tier_flag)) + '\n'
-        rep += '  general_profile_idc: ' + \
-            str(self.general_profile_idc) + '\n'
-        rep += '  general_profile_compat_flags: ' + \
-            str(bin(self.general_profile_compat_flags)) + '\n'
-        rep += '  general_const_indicator_flags: ' + \
-            str(bin(self.general_const_indicator_flags)) + '\n'
-        rep += '  general_level_idc: ' + \
-            str(self.general_level_idc) + '\n'
-        rep += '  min_spatial_segmentation_idc: ' + \
-            str(self.min_spatial_segmentation_idc) + '\n'
-        rep += '  parallelism_type: ' + \
-            str(self.parallelism_type) + '\n'
-        rep += '  chroma_format: ' + \
-            str(self.chroma_format) + '\n'
-        rep += '  bit_depth_luma_minus_8: ' + \
-            str(self.bit_depth_luma_minus_8) + '\n'
-        rep += '  bit_depth_chroma_minus_8: ' + \
-            str(self.bit_depth_chroma_minus_8) + '\n'
-        rep += '  avg_frame_rate: ' + \
-            str(self.avg_frame_rate) + '\n'
-        rep += '  constant_frame_rate: ' + \
-            str(self.constant_frame_rate) + '\n'
-        rep += '  num_temporal_layers: ' + \
-            str(self.num_temporal_layers) + '\n'
-        rep += '  temporal_id_nested: ' + \
-            str(self.temporal_id_nested) + '\n'
-        rep += '  length_size_minus_1: ' + \
-            str(self.length_size_minus_1)
-        #rep += '  array: ' + \
-        #    str(self.array) + '\n'
-        return indent(rep)
 
     def read(self, file):
         self.configuration_version = read_int(file, 1)

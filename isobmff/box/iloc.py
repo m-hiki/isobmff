@@ -1,32 +1,23 @@
 # -*- coding: utf-8 -*-
-from .box import read_int
-from .box import indent
+from .field import Bit, Entry, Int, List, String
 from .full_box import FullBox
 
-class ItemLocationBox(FullBox, box_type='iloc'):    
+class ItemLocationBox(FullBox, boxtype='iloc'):    
     is_mandatory = False
+    offset_size = Bit(4)
+    length_size = Bit(4)
+    base_offset_size = Bit(4)
+    reserved = Bit(4)
+    item_count = Int(16)
+    #item = List()
 
-    def __init__(self, size, version, flags):
-        super().__init__(size=size, version=version, flags=flags)
-        self.offset_size = None
-        self.length_size = None
-        self.base_offset_size = None
-        self.reserved = None
-        self.items = []
-
-    def __repr__(self):
-        rep = 'offset_size:' + str(self.offset_size) + '\n'
-        rep += 'length_size:' + str(self.length_size)
-        return super().__repr__() + indent(rep)
-
-    def read(self, file):
-        byte = read_int(file, 1)
-        self.offset_size = (byte >> 4) & 0b1111
-        self.length_size = byte & 0b1111
-        byte = read_int(file, 1)
-        self.base_offset_size = (byte >> 4) & 0b1111
-        self.reserved = byte & 0b1111
-        self.items = []
+    class Item(Entry):
+        item_id = Int(16)
+        data_reference_index = Int(16)
+        base_offset = Int(ItemLocationBox.base_offset_size)
+    #items = List()
+    
+"""
         item_count = read_int(file, 2)
 
         for _ in range(item_count):
@@ -42,3 +33,5 @@ class ItemLocationBox(FullBox, box_type='iloc'):
                 extent['extent_length'] = read_int(file, self.length_size)
                 item['extents'].append(extent)
             self.items.append(item)
+
+"""
