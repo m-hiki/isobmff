@@ -1,32 +1,28 @@
 # -*- coding: utf-8 -*-
 from enum import Enum
-from .base import BoxMeta, Field
+from .base import BoxMeta, FieldIO
 from .field import Int, String, Container
 from .bitsio import BitsIO
 import re
 
 
-class Box(Field, metaclass=BoxMeta, boxtype=None):
+class Box(FieldIO, metaclass=BoxMeta, boxtype=None):
     size = Int(32)
     typ = String(32)
 
     def get_box_size(self):
         """get box size excluding header"""
+        print(type(self.size))
         return self.size - (Box.size.size + Box.typ.size)
-
-    def read_field(self, file):
-        for name, field in self.fields.items():
-            field.read(file)
-            print(name + ' ' + str(field))
         
     def read(self, file):
-        self.read_field(file)
+        super().read(file)
         buff = BitsIO(file.read(self.get_box_size()))
         print(self.typ + '(' + str(self.size) + ')')
         for cls in get_class_tree(Box, BoxMeta.box_list[self.typ]):
             self.__class__ = cls
             print(cls)
-            self.read_field(buff)
+            super().read(buff)
 
     def write(self, file):
         """write box to file"""

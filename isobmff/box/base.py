@@ -4,11 +4,11 @@ from collections import OrderedDict
 
 class OrderedFieldMeta(type):
     @classmethod
-    def __prepare__(mcs, name, bases, *, boxtype, extended_type=None):
+    def __prepare__(mcs, name, bases, **kwds):
         return OrderedDict()
 
-    def __new__(mcs, clsname, bases, clsdict):
-        cls = type.__new__(mcs, clsname, bases, dict(clsdict))
+    def __new__(mcs, name, bases, clsdict, **kwds):
+        cls = type.__new__(mcs, name, bases, dict(clsdict))
         fields = ((k, v) for k, v in clsdict.items() if isinstance(v, Field))
         cls.fields = OrderedDict(fields)
         return cls
@@ -32,7 +32,7 @@ class BoxMeta(OrderedFieldMeta):
         super().__init__(clsname, bases, clsdict)
 
 
-class Field(metaclass=OrderedFieldMeta):
+class Field:
     def __init__(self, size=None):
         if size:
             self.size = size // 8 # bit to byte
@@ -52,3 +52,10 @@ class Field(metaclass=OrderedFieldMeta):
 
     def write(self, file):
         pass
+
+
+class FieldIO(metaclass=OrderedFieldMeta):
+    def read(self, file):
+        for name, field in self.fields.items():
+            field.read(file)
+            print(name + ' ' + str(field))
