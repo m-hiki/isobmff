@@ -22,9 +22,7 @@ class MediaFile(object):
 
     def read(self, file_name):
         read_size = os.path.getsize(file_name)
-        file = open(file_name, 'rb')
-
-        try:
+        with open(file_name, 'rb') as file:
             while read_size:
                 box = Box()
                 box.read(file)
@@ -36,5 +34,3 @@ class MediaFile(object):
                 #setattr(self, box.box_type, box)
                 #    pass
                 read_size -= box.size
-        finally:
-            file.close()
