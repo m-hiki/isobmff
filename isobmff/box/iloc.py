@@ -9,7 +9,6 @@ class ItemLocationBox(FullBox, boxtype='iloc'):
     base_offset_size = Bit(4)
     reserved = Bit(4)
     item_count = Int(16)
-    #item = List()
     class Item(Entry):
         item_id = Int(16)
         data_reference_index = Int(16)
@@ -19,7 +18,7 @@ class ItemLocationBox(FullBox, boxtype='iloc'):
             extent_offset = Int(offset_size)
             extent_lengh = Int(length_size)
         extents = Extent(extent_count)
-    items = Item(item_count)
+    items = List(item_count, Item)
     #items = List()
     
 """
