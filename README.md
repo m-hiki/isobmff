@@ -25,5 +25,5 @@ Python 3.4+
     - box types: 'iprp', 'ispe', 'ipma'
 - [ITU-T Rec. H.265](http://www.itu.int/rec/T-REC-H.265)
 
-## Author
-Minoru Hiki
+## Copyright
+Copyright(c) 2017 Minoru Hiki. All rights reserved.
