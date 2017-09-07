@@ -2,7 +2,7 @@
 from collections import OrderedDict
 
 class FieldMeta(type):
-    def __new__(cls, name, bases, namespace):
+    def __new__(cls, name, bases, namespace):#*args, **kwargs
         return type.__new__(cls, name, bases, namespace)
 
 
@@ -52,4 +52,4 @@ class BoxIO(metaclass=BoxMeta):
     def read(self, file):
         for name, field in self.fields.items():
             field.read(file)
-            #print(name)
+            print(name)

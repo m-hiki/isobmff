@@ -13,7 +13,7 @@ from . import field
 from . import hdlr
 #from . import hvc
 #from . import iinf
-#from . import iloc
+from . import iloc
 #from . import ipro
 #from . import iprp
 #from . import mdat

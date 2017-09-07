@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
-from copy import deepcopy
 from .base import Field
+
+
+def def_int(size):
+
+    def read(file):
+        self.value = file.read_bits(size)
+    
+    def write(file):
+        pass
 
 
 class Bit(Field):
