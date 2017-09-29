@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from .field import Bit, Entry, Int, List, String
 from .full_box import FullBox
 

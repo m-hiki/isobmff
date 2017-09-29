@@ -1,5 +1,4 @@
 
-# -*- coding: utf-8 -*-
 from .box import read_int
 from .full_box import FullBox
 

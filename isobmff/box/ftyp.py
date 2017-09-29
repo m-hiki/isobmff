@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from .box import Box, Quantity
 from .field import Int, String, Container
 

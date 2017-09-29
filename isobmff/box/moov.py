@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 

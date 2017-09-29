@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from enum import Enum
 from .base import BoxIO
 from .field import Int, String, Container

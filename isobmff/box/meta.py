@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from .box import Quantity
 from .full_box import ContainerFullbox
 

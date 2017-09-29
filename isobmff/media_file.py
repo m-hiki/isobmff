@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from .box.box import Box, indent
 import os
 
