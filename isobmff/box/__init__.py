@@ -5,11 +5,14 @@ from __future__ import absolute_import
 #from . import bitsio
 from . import box
 from . import full_box
-from . import ftyp
-#from . import ccst
-#rom . import dinf
 from . import field
-from . import hdlr
+
+from.iso14496_12 import (
+    ftyp,
+    hdlr
+)
+#from . import ccst
+# rom . import dinf
 #from . import hvc
 #from . import iinf
 from . import iloc

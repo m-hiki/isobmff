@@ -1,7 +1,7 @@
-from .box import Box
+from ..box import Box
 
 
-class MediaDataBox(Box, box_type='mdat'):    
+class MediaDataBox(Box, box_type='mdat'):
     is_mandatory = False
 
     def __init__(self, size):

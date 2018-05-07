@@ -1,6 +1,7 @@
 from .box import Box
 from .field import Int, Container
 
+
 class FullBox(Box, boxtype=None):
     version = Int(8)
     flags = Int(24)

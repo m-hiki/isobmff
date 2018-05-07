@@ -1,14 +1,18 @@
 from collections import OrderedDict
 
+
 class FieldMeta(type):
-    def __new__(cls, name, bases, namespace):#*args, **kwargs
+    def __new__(cls, name, bases, namespace):  # *args, **kwargs
         return type.__new__(cls, name, bases, namespace)
 
 
 class Field(metaclass=FieldMeta):
     def __init__(self, size=None):
         if size:
-            self.size = size // 8 # bit to byte
+            if self.__class__.__name__ == 'Bit':
+                self.size = size
+            else:
+                self.size = size // 8  # bit to byte
         self.value = None
 
     def __get__(self, instance, owner=None):
@@ -16,7 +20,7 @@ class Field(metaclass=FieldMeta):
             return self.value
         else:
             return self
-    
+
     def __set__(self, instance, value):
         if instance:
             self.value = value
@@ -28,6 +32,7 @@ class Field(metaclass=FieldMeta):
 
     def write(self, file):
         pass
+
 
 class BoxMeta(type):
     box_list = {}
@@ -46,6 +51,7 @@ class BoxMeta(type):
 
     def __init__(self, name, bases, namespace, *, boxtype=None):
         super().__init__(name, bases, namespace)
+
 
 class BoxIO(metaclass=BoxMeta):
     def read(self, file):

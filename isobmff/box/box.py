@@ -12,7 +12,7 @@ class Box(BoxIO):
     def get_box_size(self):
         """get box size excluding header"""
         return self.size - (Box.size.size + Box.typ.size)
-        
+
     def read(self, file):
         super().read(file)
         buff = BitsIO(file.read(self.get_box_size()))
@@ -43,14 +43,17 @@ class ContainerBox(Box):
             read_size -= box.size
     """
 
+
 class Quantity(Enum):
     ZERO_OR_ONE = 0
     EXACTLY_ONE = 1
     ONE_OR_MORE = 2
     ANY_NUMBER = 3
 
+
 def indent(rep):
     return re.sub(r'^', '  ', rep, flags=re.M)
+
 
 def get_class_tree(cls, target):
     tree = []

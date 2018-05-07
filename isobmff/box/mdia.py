@@ -1,12 +1,13 @@
 from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
-class MediaBox(Box, box_type='mdia'):    
+
+class MediaBox(Box, box_type='mdia'):
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
 
 
-class MediaHeaderBox(FullBox, box_type='mdhd'):    
+class MediaHeaderBox(FullBox, box_type='mdhd'):
     is_mandatory = True
     quantity = Quantity.EXACTLY_ONE
 
@@ -17,7 +18,7 @@ class MediaHeaderBox(FullBox, box_type='mdhd'):
         self.timescale = None
         self.duration = None
         self.pad = None
-        self.language = [] # ISO-639-2/T language code
+        self.language = []  # ISO-639-2/T language code
         self.pre_defined = None
 
     def read(self, file):

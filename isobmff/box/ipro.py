@@ -1,7 +1,8 @@
 from .box import Box, Quantity, read_box, read_int, read_string
 from .full_box import FullBox
 
-class ItemProtectionBox(FullBox, box_type='ipro'):    
+
+class ItemProtectionBox(FullBox, box_type='ipro'):
     is_mandatory = False
     quantity = Quantity.ZERO_OR_ONE
 
@@ -22,4 +23,3 @@ class ItemProtectionBox(FullBox, box_type='ipro'):
                 break
             if box.box_type == 'sinf':
                 self.protection_informations.append(box)
-

@@ -3,16 +3,16 @@ from .full_box import FullBox
 from .field import Int, String
 
 
-class DataInformationBox(Box, box_type='dinf'):    
+class DataInformationBox(Box, box_type='dinf'):
     is_mandatry = True
     quantity = Quantity.EXACTLY_ONE
 
 
-class DataReferenceBox(FullBox, box_type='dref'):    
+class DataReferenceBox(FullBox, box_type='dref'):
     is_mandatry = True
     quantity = Quantity.EXACTLY_ONE
     entry_count = Int(32)
-
+    #data_entry = Entry()
 
     def read(self, file):
         entry_count = read_int(file, 4)
@@ -24,7 +24,7 @@ class DataReferenceBox(FullBox, box_type='dref'):
             self.data_entry.append(box)
 
 
-class DataEntryUrlBox(FullBox, box_type='url '):    
+class DataEntryUrlBox(FullBox, box_type='url '):
     is_mandatry = True
 
     def __init__(self, size, version, flags):
@@ -35,7 +35,7 @@ class DataEntryUrlBox(FullBox, box_type='url '):
         self.location = read_string(file)
 
 
-class DataEntryUrnBox(FullBox, box_type='urn '):    
+class DataEntryUrnBox(FullBox, box_type='urn '):
     is_mandatry = True
 
     def __init__(self, size, version, flags):

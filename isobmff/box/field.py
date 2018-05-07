@@ -6,10 +6,12 @@ class Bit(Field):
     def read(self, file):
         self.value = file.read_bits(self.size)
 
+
 class Container(Field):
     """Container
        read object to box end and save to list
     """
+
     def __init__(self, obj):
         super().__init__(None)
         self.obj = obj
@@ -23,25 +25,29 @@ class Container(Field):
             self.value.append(item)
             size -= self.obj.size
 
-        #for item in self.value:
+        # for item in self.value:
         #    print(item.value)
+
 
 class DataLocation(Field):
     def read(self, file):
         self.value = file.tell()
 
+
 class Int(Field):
     def read(self, file):
-        self.value =  int.from_bytes(file.read(self.size), byteorder='big')
+        self.value = int.from_bytes(file.read(self.size), byteorder='big')
+
 
 class String(Field):
     def read(self, file):
-        #TODO: convert utf8
+        # TODO: convert utf8
         if self.size:
             res = file.read(self.size).decode()
         else:
             res = ''.join(iter(lambda: file.read(1).decode('ascii'), '\x00'))
         self.value = res
+
 
 class List(Field):
     def __init__(self, size, obj):
@@ -55,6 +61,7 @@ class List(Field):
             item.read(file)
             self.value.append(item)
 
+
 class Entry(Field):
     def __init__(self, count, **args):
         super().__init__(None)
@@ -64,6 +71,7 @@ class Entry(Field):
     def read(self, file):
         self.value = []
         self.count.read(file)
+
         for _ in range(self.count.value):
             items = {}
             for name, obj in self.objs.items():
