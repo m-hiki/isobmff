@@ -1,4 +1,4 @@
-from .field import Bit, Entry, Int, List, String
+from .field_types import Bit, Entry, Int, List, String
 from .full_box import FullBox
 
 
@@ -14,5 +14,5 @@ class ItemLocationBox(FullBox, boxtype='iloc'):
                   data_reference_index=Int(16),
                   base_offset=Int(base_offset_size),
                   extents=Entry(count=Int(16),
-                                extent_offset=Int(offset_size.value),
-                                extent_lengh=Int(length_size.value)))
+                                extent_offset=Int(offset_size),
+                                extent_lengh=Int(length_size)))

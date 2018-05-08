@@ -1,25 +1,8 @@
-from .box import Box, Quantity, read_box, read_int, read_string
-from .full_box import FullBox
+from ..box import Box, Quantity, read_box, read_int, read_string
+from ..full_box import FullBox
 
-class ItemInformationBox(FullBox, boxtype='iinf'):    
-    is_mandatory = False
 
-    def __init__(self, size, version, flags):
-        super().__init__(size=size, version=version, flags=flags)
-        self.item_infos = []
-
-    def read(self, file):
-        count_size = 2 if self.version == 0 else 4
-        entry_count = read_int(file, count_size)
-
-        for _ in range(entry_count):
-            box = read_box(file)
-            if not box:
-                break
-            if box.box_type == 'infe':
-                self.item_infos.append(box)
-
-class ItemInfomationEntry(FullBox, boxtype='infe'):    
+class ItemInfomationEntry(FullBox, boxtype='infe'):
 
     def __init__(self, size, version, flags):
         super().__init__(size=size, version=version, flags=flags)
@@ -33,7 +16,7 @@ class ItemInfomationEntry(FullBox, boxtype='infe'):
         self.uri_type = None
 
     def __repr__(self):
-        rep =  'item_id: ' + str(self.item_id) + '\n'
+        rep = 'item_id: ' + str(self.item_id) + '\n'
         rep += 'item_protection_index: ' + \
             str(self.item_protection_index) + '\n'
         rep += 'item_name: ' + self.item_name
@@ -62,12 +45,13 @@ class ItemInfomationEntry(FullBox, boxtype='infe'):
             self.item_protection_index = read_int(file, 2)
             self.item_type = read_string(file, 4)
             self.item_name = read_string(file)
-            
+
             if self.item_type == 'mime':
                 self.content_type = read_string(file)
                 self.content_encoding = read_string(file)
             elif self.item_type == 'uri ':
                 self.uri_type = read_string(file)
+
 
 class FDItemInfoExtension(object):
     def __init__(self):
@@ -76,7 +60,7 @@ class FDItemInfoExtension(object):
         self.content_length = None
         self.transfer_length = None
         self.group_ids = []
-    
+
     def read(self, file):
         """read"""
         self.content_location = read_string(file)

@@ -1,5 +1,5 @@
 from .box import Box
-from .field import Int, Container
+from .field_types import Int, Container
 
 
 class FullBox(Box, boxtype=None):

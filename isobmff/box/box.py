@@ -1,6 +1,6 @@
 from enum import Enum
 from .base import BoxIO
-from .field import Int, String, Container
+from .field_types import Int, String, Container
 from .bitsio import BitsIO
 import re
 
@@ -11,7 +11,7 @@ class Box(BoxIO):
 
     def get_box_size(self):
         """get box size excluding header"""
-        return self.size - (Box.size.size + Box.typ.size)
+        return self.size - (Box.size.size_in_byte() + Box.typ.size_in_byte())
 
     def read(self, file):
         super().read(file)

@@ -1,37 +1,5 @@
 from collections import OrderedDict
-
-
-class FieldMeta(type):
-    def __new__(cls, name, bases, namespace):  # *args, **kwargs
-        return type.__new__(cls, name, bases, namespace)
-
-
-class Field(metaclass=FieldMeta):
-    def __init__(self, size=None):
-        if size:
-            if self.__class__.__name__ == 'Bit':
-                self.size = size
-            else:
-                self.size = size // 8  # bit to byte
-        self.value = None
-
-    def __get__(self, instance, owner=None):
-        if instance:
-            return self.value
-        else:
-            return self
-
-    def __set__(self, instance, value):
-        if instance:
-            self.value = value
-        else:
-            pass
-
-    def read(self, file):
-        pass
-
-    def write(self, file):
-        pass
+from .field import Field
 
 
 class BoxMeta(type):

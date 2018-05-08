@@ -1,5 +1,5 @@
 from ..box import Box, Quantity
-from ..field import Int, String, Container
+from ..field_types import Int, String, Container
 
 
 class FileTypeBox(Box, boxtype='ftyp'):

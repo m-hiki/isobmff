@@ -1,5 +1,5 @@
 from ..box import Quantity
-from ..field import Int, List, String
+from ..field_types import Int, List, String
 from ..full_box import FullBox
 
 
